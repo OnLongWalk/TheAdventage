@@ -19,6 +19,12 @@ export class MoveControl extends Component {
     @property(Node)
     private attackButton: Node
 
+    @property(Node)
+    private restart: Node
+
+    @property(Node)
+    private returnButton: Node
+
     private isEnable: boolean = false
 
     start() {
@@ -27,18 +33,18 @@ export class MoveControl extends Component {
         this.rightButton.on(Input.EventType.TOUCH_START, this.rightStart, this)
         this.rightButton.on(Input.EventType.TOUCH_END, this.rightEnd, this)
         this.upButton.on(Input.EventType.TOUCH_START, this.jumpStart, this)
-        this.attackButton.on(Input.EventType.TOUCH_START, null, this.attackButton)
-        this.attackButton.on(Input.EventType.TOUCH_END, null, this.attackButton)
+        this.attackButton.on(Input.EventType.TOUCH_START, null, this)
+        this.attackButton.on(Input.EventType.TOUCH_END, null, this)
+        this.restart.on(Input.EventType.TOUCH_START, this.context.gameStart, this.context)
+        this.returnButton.on(Input.EventType.TOUCH_START, this.context.returnGameStartPage, this.context)
     }
 
     rightStart() {
         this.context.isRight = true
-        console.log("touch start")
     }
 
     rightEnd() {
         this.context.isRight = false
-        console.log("touch end")
     }
 
     jumpStart() {
