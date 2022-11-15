@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, math, Vec3, tweenUtil, tween, Tween, UITransform } from 'cc';
+import { _decorator, Component, Node, math, Vec3, tweenUtil, tween, Tween, UITransform, RigidBody2D } from 'cc';
 import { UIMain } from './UIMain';
 const { ccclass, property } = _decorator;
 
@@ -15,6 +15,10 @@ export class Context extends Component {
 
     private _currentTime: number
 
+    private rightDir = new math.Vec3(1, 1, 1)
+
+    private leftDir = new math.Vec3(-1, 1, 1)
+
     private _isRight: boolean = false
 
     private _isLeft: boolean = false
@@ -23,13 +27,11 @@ export class Context extends Component {
 
     private _speed: number = 5
 
-    private _jumpHeight: number = 35
+    private _jumpSpeed: math.Vec2 = math.v2(0, 6)
 
     private _rightMove: math.Vec3 = new Vec3(this._speed, 0, 0)
 
     private _leftMove: math.Vec3 = new Vec3(-this._speed, 0, 0)
-
-    private _jumpMove: math.Vec3 = new Vec3(0, this._jumpHeight, 0)
 
     private targetBox: math.Rect
 
@@ -45,12 +47,14 @@ export class Context extends Component {
         }
         // 按钮控制人物移动
         if (this._isRight) {
+            this.player.scale = this.rightDir
             this.move(this._rightMove)
         }
         if (this._isJump) {
             this.jump()
         }
         if (this._isLeft) {
+            this.player.scale = this.leftDir
             this.move(this._leftMove)
         }
         this.currentTime = deltaTime
@@ -61,8 +65,11 @@ export class Context extends Component {
     }
 
     jump(): void {
-        let action: Tween<Node> = tween(this.player)
-        action.by(0.1, { position: this._jumpMove }).call(() => { this._isJump = false }).start()
+        let rigidBody: RigidBody2D = this.player.getComponent(RigidBody2D)
+        if (rigidBody.linearVelocity.y < 0.0001 && rigidBody.linearVelocity.y > -0.0001) {
+            rigidBody.linearVelocity = rigidBody.linearVelocity.add(this._jumpSpeed)
+        }
+        this.isJump = false
     }
 
     gameOver(): void {
@@ -80,6 +87,8 @@ export class Context extends Component {
         this._isLeft = false
         this._isJump = false
         this.player.setPosition(-235, -60, 0)
+        this.player.scale = math.v3(1, 1, 1)
+        this.player.getComponent(RigidBody2D).linearVelocity = math.v2(0, 0)
     }
 
     returnGameStartPage(): void {
