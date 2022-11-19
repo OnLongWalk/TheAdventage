@@ -1,19 +1,19 @@
 {
   "game": {
-    "name": "未知游戏",
+    "name": "UNKNOW GAME",
     "app_id": "UNKNOW",
     "c_id": "0"
   },
   "appConfigMaps": [
     {
       "app_id": "UNKNOW",
-      "config_id": "2861c8"
+      "config_id": "fd1306"
     }
   ],
   "configs": [
     {
       "app_id": "UNKNOW",
-      "config_id": "2861c8",
+      "config_id": "fd1306",
       "config_name": "Default",
       "config_remarks": "",
       "services": []
