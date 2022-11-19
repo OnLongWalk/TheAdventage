@@ -27,7 +27,7 @@ export class Context extends Component {
 
     private _speed: number = 5
 
-    private _jumpSpeed: math.Vec2 = math.v2(0, 6)
+    private _jumpSpeed: math.Vec2 = math.v2(0, 8.5)
 
     private _rightMove: math.Vec3 = new Vec3(this._speed, 0, 0)
 
