@@ -35,9 +35,12 @@ export class Context extends Component {
 
     private targetBox: math.Rect
 
+    private startPosition: math.Vec3
+
     start() {
-        this.gameStart()
         this.targetBox = this.destination.getComponent(UITransform).getBoundingBox()
+        this.startPosition = this.player.getPosition()
+        this.gameStart()
     }
 
     update(deltaTime: number) {
@@ -86,7 +89,7 @@ export class Context extends Component {
         this._isRight = false
         this._isLeft = false
         this._isJump = false
-        this.player.setPosition(-235, -60, 0)
+        this.player.setPosition(this.startPosition)
         this.player.scale = math.v3(1, 1, 1)
         this.player.getComponent(RigidBody2D).linearVelocity = math.v2(0, 0)
     }
@@ -94,7 +97,7 @@ export class Context extends Component {
     returnGameStartPage(): void {
         this.gameStart()
         this.uIMain.gameStartPage()
-    }
+    } 
 
     private isArriveDestination(): boolean {
         const playBoundingBox: math.Rect = this.player.getComponent(UITransform).getBoundingBox()
