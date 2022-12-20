@@ -1,5 +1,6 @@
 import { _decorator, Component, Node, Input } from 'cc';
 import { Context } from '../Context';
+import { RoundManger } from '../round/RoundManger';
 const { ccclass, property } = _decorator;
 
 @ccclass('MoveControl')
@@ -25,9 +26,13 @@ export class MoveControl extends Component {
     @property(Node)
     private returnButton: Node
 
+    @property(Node)
+    private roundManager: Node
+
     private isEnable: boolean = false
 
     start() {
+        const roundManager: RoundManger = this.roundManager.getComponent(RoundManger)
         this.leftButton.on(Input.EventType.TOUCH_START, this.leftStart, this)
         this.leftButton.on(Input.EventType.TOUCH_END, this.leftEnd, this)
         this.rightButton.on(Input.EventType.TOUCH_START, this.rightStart, this)
@@ -35,8 +40,12 @@ export class MoveControl extends Component {
         this.upButton.on(Input.EventType.TOUCH_START, this.jumpStart, this)
         this.attackButton.on(Input.EventType.TOUCH_START, null, this)
         this.attackButton.on(Input.EventType.TOUCH_END, null, this)
-        this.restart.on(Input.EventType.TOUCH_START, this.context.gameStart, this.context)
+        this.restart.on(Input.EventType.TOUCH_START, roundManager.reloadRound, roundManager)
         this.returnButton.on(Input.EventType.TOUCH_START, this.context.returnGameStartPage, this.context)
+    }
+
+    onLoad() {
+
     }
 
     rightStart() {
